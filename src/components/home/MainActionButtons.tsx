@@ -1,4 +1,6 @@
 import React from 'react';
+import { themeColors } from '../../constants/theme';
+import { gradients } from '../../styles/common';
 
 interface MainActionButtonsProps {
   buttons: { label: string }[];
@@ -6,20 +8,14 @@ interface MainActionButtonsProps {
 
 const MainActionButtons: React.FC<MainActionButtonsProps> = ({ buttons }) => {
   const isDark = typeof window !== 'undefined' && window.location.pathname === '/home-dark';
-  const textColor = isDark ? '#CBCBCB' : '#5B5B5B';
-  const borderGradient = isDark
-    ? 'url(#button-border-gradient-dark)'
-    : undefined;
+  const theme = isDark ? themeColors.dark : themeColors.light;
   return (
-    <div
-      className="flex flex-row justify-start items-center gap-[10px] mt-0 mb-6"
-      style={{ width: 'auto', margin: '0 auto 0 0' }}
-    >
+    <div className="flex flex-row justify-start items-center gap-[10px] mt-0 mb-6" style={{ width: 'auto', margin: '0 auto 0 0' }}>
       <svg width="0" height="0">
         <defs>
           <linearGradient id="button-border-gradient-dark" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
-            <stop stopColor="#FF0004" />
-            <stop offset="1" stopColor="#FFCC06" />
+            <stop stopColor={theme.gradientStart} />
+            <stop offset="1" stopColor={theme.gradientEnd} />
           </linearGradient>
         </defs>
       </svg>
@@ -43,10 +39,10 @@ const MainActionButtons: React.FC<MainActionButtonsProps> = ({ buttons }) => {
               zIndex: 2,
               border: 'none',
               outline: 'none',
-              background: isDark ? 'rgba(0,0,0,0.24)' : 'rgba(255,255,255,0.24)',
+              background: theme.buttonBg,
               borderRadius: 16,
               padding: '8px 16px',
-              color: textColor,
+              color: theme.buttonText,
               fontFamily: 'Inter, sans-serif',
               fontWeight: 400,
               lineHeight: '140%',
@@ -64,7 +60,7 @@ const MainActionButtons: React.FC<MainActionButtonsProps> = ({ buttons }) => {
               }
             }}
           >
-            <span style={{whiteSpace: i === 0 ? 'normal' : 'pre-line', textAlign: 'left', width: '100%', display: 'block', color: textColor}}>
+            <span style={{ whiteSpace: i === 0 ? 'normal' : 'pre-line', textAlign: 'left', width: '100%', display: 'block', color: theme.buttonText }}>
               {buttons[i].label}
             </span>
           </button>
@@ -73,7 +69,7 @@ const MainActionButtons: React.FC<MainActionButtonsProps> = ({ buttons }) => {
             height="100%"
             viewBox={`0 0 ${i === 0 ? 180 : i === 1 ? 143 : 220} 56`}
             fill="none"
-            style={{position: 'absolute', top: 0, left: 0, zIndex: 1, pointerEvents: 'none'}}
+            style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, pointerEvents: 'none' }}
           >
             <rect
               x="0.25"
@@ -83,13 +79,13 @@ const MainActionButtons: React.FC<MainActionButtonsProps> = ({ buttons }) => {
               rx="16"
               fill="none"
               stroke={isDark ? 'url(#button-border-gradient-dark)' : `url(#button-border-gradient-${i + 1})`}
-              strokeWidth={isDark ? 0.5 : 0.5}
+              strokeWidth={0.5}
             />
             {!isDark && (
               <defs>
                 <linearGradient id={`button-border-gradient-${i + 1}`} x1="0" y1="0" x2={i === 0 ? 180 : i === 1 ? 143 : 220} y2="0" gradientUnits="userSpaceOnUse">
-                  <stop stopColor={i === 1 ? '#FFCC06' : '#FF0004'} />
-                  <stop offset="1" stopColor={i === 1 ? '#FF0004' : '#FFCC06'} />
+                  <stop stopColor={i === 1 ? theme.gradientEnd : theme.gradientStart} />
+                  <stop offset="1" stopColor={i === 1 ? theme.gradientStart : theme.gradientEnd} />
                 </linearGradient>
               </defs>
             )}
