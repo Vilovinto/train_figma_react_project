@@ -32,7 +32,6 @@ const DecorativeBlobs = () => {
     );
   }
 
-  // Темна тема — залишаємо як було
   const ellipse1 = { width: 93, height: 93, background: '#FFD200', opacity: 0.9 };
   const ellipse2 = { width: 109, height: 109, background: '#FF0004', opacity: 0.9 };
 

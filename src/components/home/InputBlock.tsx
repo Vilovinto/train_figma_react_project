@@ -14,7 +14,8 @@ interface InputBlockProps {
   onSend: () => void;
 }
 
-const InputBlock: React.FC<InputBlockProps> = ({ placeholder = 'Ask anything', value, onChange, onSend }) => {
+const InputBlock: React.FC<InputBlockProps> = (props) => {
+  const { placeholder = 'Ask anything', value, onChange, onSend } = props;
   const isDark = typeof window !== 'undefined' && window.location.pathname === '/home-dark';
   const theme = isDark ? themeColors.dark : themeColors.light;
   return (

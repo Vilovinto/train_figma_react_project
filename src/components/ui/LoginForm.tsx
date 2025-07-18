@@ -1,25 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Button, Separator } from '../common';
 import GoogleButton from '../social/GoogleButton';
 import AppleButton from '../social/AppleButton';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const handleSubmit = (e: React.FormEvent) => {
+  const { login, isAuthenticated } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isAuthenticated) navigate('/home');
+  }, [isAuthenticated, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate('/home');
+    setError(null);
+    const err = await login(email, password);
+    if (err) setError(err);
   };
+
   return (
     <form className="w-full flex flex-col gap-0 items-center" onSubmit={handleSubmit}>
       <div className="mb-8 w-full max-w-[380px]">
-        <label className="block text-[16px] leading-[22px] font-normal text-black mb-2">Username or Email</label>
-        <Input type="text" placeholder="Username or email" autoComplete="username" className="w-full" />
+        <label className="block text-[16px] leading-[22px] font-normal text-black mb-2">Email</label>
+        <Input type="email" value={email} onChange={({ target: { value } }) => setEmail(value)} placeholder="Email" autoComplete="username" className="w-full" />
       </div>
       <div className="mb-2 w-full max-w-[380px]">
         <label className="block text-[16px] leading-[22px] font-normal text-black mb-2">Password</label>
-        <Input type="password" placeholder="Password" autoComplete="current-password" className="w-full" />
+        <Input type="password" value={password} onChange={({ target: { value } }) => setPassword(value)} placeholder="Password" autoComplete="current-password" className="w-full" />
       </div>
+      {error && <div className="text-red-500 text-sm mb-2 w-full max-w-[380px]">{error}</div>}
       <div className="mb-4 w-full max-w-[380px]">
         <button type="button" className="font-inter text-[14px] leading-[20px] font-normal text-[#5B5B5B] text-center mx-auto focus:outline-none">Forgot password?</button>
       </div>

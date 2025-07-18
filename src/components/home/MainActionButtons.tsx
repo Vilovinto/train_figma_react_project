@@ -6,7 +6,8 @@ interface MainActionButtonsProps {
   buttons: { label: string }[];
 }
 
-const MainActionButtons: React.FC<MainActionButtonsProps> = ({ buttons }) => {
+const MainActionButtons: React.FC<MainActionButtonsProps> = (props) => {
+  const { buttons } = props;
   const isDark = typeof window !== 'undefined' && window.location.pathname === '/home-dark';
   const theme = isDark ? themeColors.dark : themeColors.light;
   return (
