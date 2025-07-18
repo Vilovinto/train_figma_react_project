@@ -1,0 +1,16 @@
+export { default as user } from './user.png';
+export { default as question } from './question.png';
+export { default as deep_search } from './deep_search.png';
+export { default as think } from './think.png';
+export { default as analyze } from './analyze.png';
+export { default as paperclip } from './paperclip.png';
+export { default as arrowUp } from './arrow-up.png';
+export { default as table } from './table.png';
+export { default as edit } from './edit.png';
+export { default as create_content } from './create_content.png';
+export { default as documents } from './documents.png';
+export { default as chat_history } from './chat_history.png';
+export { default as logoPerson } from './logo-person.png';
+export { default as logoText } from './logo-text.png';
+export { default as apple } from './apple.png';
+export { default as google } from './google.png'; 

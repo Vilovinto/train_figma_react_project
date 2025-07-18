@@ -4,6 +4,7 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import RegisterStep2Page from '../pages/RegisterStep2Page';
 import HomePage from '../pages/HomePage';
+import HomePageDark from '../pages/HomePageDark';
 
 const AppRouter = () => (
   <Router>
@@ -12,6 +13,7 @@ const AppRouter = () => (
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/register/step2" element={<RegisterStep2Page />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/home-dark" element={<HomePageDark />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   </Router>

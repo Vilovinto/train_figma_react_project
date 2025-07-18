@@ -1,6 +1,5 @@
 import React from 'react';
-import { Input } from './input';
-import { Button } from './button';
+import { Input, Button } from '../common';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterStep2Form = () => {

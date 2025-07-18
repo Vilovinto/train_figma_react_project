@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Sidebar, TopRightButtons } from '../components/layout';
 import { MainActionButtons, InputBlock, DecorativeBlobs } from '../components/home';
 
-const HomePage = () => {
+const HomePageDark = () => {
   const [inputValue, setInputValue] = useState('');
   return (
-    <div className="min-h-screen w-full bg-[#FBF8F4] flex flex-row relative overflow-hidden">
+    <div className="min-h-screen w-full flex flex-row relative overflow-hidden" style={{background: '#101010'}}>
       <Sidebar />
       <div className="flex-1 flex flex-col items-center justify-start relative overflow-hidden">
         <h1
@@ -18,7 +18,8 @@ const HomePage = () => {
             fontSize: 32,
             lineHeight: '100%',
             letterSpacing: 0,
-            color: '#000',
+            color: '#fff',
+            textShadow: '0 1px 8px rgba(0,0,0,0.24)',
           }}
         >
           Good to see you! What’s on your mind?
@@ -42,4 +43,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage; 
+export default HomePageDark; 

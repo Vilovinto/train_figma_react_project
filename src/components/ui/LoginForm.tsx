@@ -1,7 +1,5 @@
 import React from 'react';
-import { Input } from './input';
-import { Button } from './button';
-import { Separator } from './separator';
+import { Input, Button, Separator } from '../common';
 import GoogleButton from '../social/GoogleButton';
 import AppleButton from '../social/AppleButton';
 import { useNavigate } from 'react-router-dom';
