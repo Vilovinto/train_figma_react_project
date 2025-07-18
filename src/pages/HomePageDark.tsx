@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useChat } from '../context/ChatContext';
 import { Sidebar, TopRightButtons } from '../components/layout';
 import { MainActionButtons, InputBlock, DecorativeBlobs } from '../components/home';
 
 const HomePageDark = () => {
   const [inputValue, setInputValue] = useState('');
+  const navigate = useNavigate();
+  const { createChat, switchChat } = useChat();
+  const handleSend = () => {
+    if (inputValue.trim()) {
+      const newId = createChat();
+      switchChat(newId);
+      navigate('/chat-dark', { state: { initialMessage: inputValue } });
+      setInputValue('');
+    }
+  };
   return (
-    <div className="min-h-screen w-full flex flex-row relative overflow-hidden" style={{background: '#101010'}}>
+    <div className="w-full flex flex-row relative overflow-x-hidden bg-[#101010]">
       <Sidebar />
-      <div className="flex-1 flex flex-col items-center justify-start relative overflow-hidden">
+      <div className="flex-1 flex flex-col items-center justify-start relative bg-[#101010]">
         <h1
           style={{
             width: 770,
@@ -35,7 +47,7 @@ const HomePageDark = () => {
           <InputBlock
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
-            onSend={() => {}}
+            onSend={handleSend}
           />
         </div>
       </div>

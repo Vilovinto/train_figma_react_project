@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import EditIcon from '../../assets/icons/EditIcon';
 import TableIcon from '../../assets/icons/TableIcon';
 import ChatHistoryIcon from '../../assets/icons/ChatHistoryIcon';
@@ -10,8 +10,13 @@ import { themeColors } from '../../constants/theme';
 const Sidebar = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { pathname } = useLocation();
-  const isDark = pathname === '/home-dark';
+  const navigate = useNavigate();
+  const isDark = pathname === '/home-dark' || pathname === '/chat-dark' || pathname === '/chats-dark';
   const theme = isDark ? themeColors.dark : themeColors.light;
+
+  const handleEditClick = () => {
+    navigate(isDark ? '/home-dark' : '/home');
+  };
 
   return (
     <aside
@@ -73,6 +78,8 @@ const Sidebar = () => {
                 onMouseLeave={() => setShowTooltip(false)}
                 onFocus={() => setShowTooltip(true)}
                 onBlur={() => setShowTooltip(false)}
+                onClick={handleEditClick}
+                aria-label="Edit"
               >
                 <EditIcon color={theme.icon} size={24} />
               </button>
@@ -85,7 +92,9 @@ const Sidebar = () => {
         {isDark && (
           <button
             className="flex flex-row items-center justify-start gap-2 px-4 py-3 rounded-[12px] w-[272px] mt-[51px] ml-[24px] hover:bg-[#F6F6F6] transition"
-            style={{background: 'none', border: 'none', boxShadow: 'none'}}>
+            style={{background: 'none', border: 'none', boxShadow: 'none'}}
+            onClick={handleEditClick}
+          >
             <EditIcon color={theme.icon} size={24} />
             <span style={{
               fontFamily: 'Inter, sans-serif',
@@ -101,7 +110,9 @@ const Sidebar = () => {
         )}
         <button
           className={`flex flex-row items-center justify-start gap-2 px-4 py-3 rounded-[12px] w-[272px] ${isDark ? 'mt-[14px]' : 'mt-[51px]'} ml-[24px] hover:bg-[#F6F6F6] transition`}
-          style={{background: 'none', border: 'none', boxShadow: 'none'}}>
+          style={{background: 'none', border: 'none', boxShadow: 'none'}}
+          onClick={() => navigate(isDark ? '/chats-dark' : '/chats')}
+        >
           <ChatHistoryIcon color={theme.icon} size={24} />
           <span style={{
             fontFamily: 'Inter, sans-serif',

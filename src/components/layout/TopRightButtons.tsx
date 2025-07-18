@@ -14,7 +14,7 @@ interface TopRightButtonsProps {
 const TopRightButtons: React.FC<TopRightButtonsProps> = ({ style }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isDark = pathname === '/home-dark';
+  const isDark = pathname.endsWith('-dark');
   const theme = isDark ? themeColors.dark : themeColors.light;
   const { user, isAuthenticated, logout } = useAuth();
 

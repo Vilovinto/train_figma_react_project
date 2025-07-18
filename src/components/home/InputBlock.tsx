@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import ArrowUpIcon from '../../assets/icons/ArrowUpIcon';
 import PaperclipIcon from '../../assets/icons/PaperclipIcon';
 import AnalyzeIcon from '../../assets/icons/AnalyzeIcon';
@@ -6,6 +6,7 @@ import ThinkIcon from '../../assets/icons/ThinkIcon';
 import DeepSearchIcon from '../../assets/icons/DeepSearchIcon';
 import { themeColors } from '../../constants/theme';
 import { gradients } from '../../styles/common';
+import { useChat } from '../../context/ChatContext';
 
 interface InputBlockProps {
   placeholder?: string;
@@ -16,19 +17,47 @@ interface InputBlockProps {
 
 const InputBlock: React.FC<InputBlockProps> = (props) => {
   const { placeholder = 'Ask anything', value, onChange, onSend } = props;
-  const isDark = typeof window !== 'undefined' && window.location.pathname === '/home-dark';
+  const isDark = typeof window !== 'undefined' && window.location.pathname === '/home-dark' || window.location.pathname === '/chat-dark';
   const theme = isDark ? themeColors.dark : themeColors.light;
+  const isChat = typeof window !== 'undefined' && (window.location.pathname === '/chat' || window.location.pathname === '/chat-dark');
+  const { streamed, isStreaming, sendMessage } = useChat();
+  const sidebarWidth = 320;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(770);
+
+  useEffect(() => {
+    if (isChat && containerRef.current) {
+      const handleResize = () => {
+        setContainerWidth(containerRef.current ? containerRef.current.offsetWidth : 770);
+      };
+      handleResize();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    } else {
+      setContainerWidth(770);
+    }
+  }, [isChat]);
+
   return (
-    <div style={{ position: 'relative', width: 770, marginBottom: 24 }}>
+    <div
+      ref={containerRef}
+      style={{
+        position: 'relative',
+        width: isChat ? '100%' : 770,
+        maxWidth: isChat ? '70vw' : 770,
+        margin: isChat ? '0 auto 24px auto' : '0 0 24px 0',
+      }}
+    >
+      {/* SVG бордер поверх усього */}
       <svg
         width="100%"
-        height="140"
-        viewBox="0 0 770 140"
+        height="100%"
+        viewBox={`0 0 ${containerWidth} 140`}
         fill="none"
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: 0, left: 0, zIndex: 100, pointerEvents: 'none' }}
       >
         <defs>
-          <linearGradient id="input-border-gradient" x1="0" y1="0" x2="770" y2="0" gradientUnits="userSpaceOnUse">
+          <linearGradient id="input-border-gradient" x1="0" y1="0" x2={containerWidth} y2="0" gradientUnits="userSpaceOnUse">
             <stop stopColor={theme.gradientStart} />
             <stop offset="1" stopColor={theme.gradientEnd} />
           </linearGradient>
@@ -36,9 +65,9 @@ const InputBlock: React.FC<InputBlockProps> = (props) => {
         <rect
           x="0.25"
           y="0.25"
-          width="769.5"
-          height="139.5"
-          rx="24"
+          width={containerWidth - 0.5}
+          height={139.5}
+          rx={24}
           fill="none"
           stroke="url(#input-border-gradient)"
           strokeWidth={isDark ? 0.5 : 1}
@@ -47,11 +76,12 @@ const InputBlock: React.FC<InputBlockProps> = (props) => {
       <div
         style={{
           position: 'relative',
-          zIndex: 2,
+          zIndex: 10,
           width: '100%',
           height: 140,
           borderRadius: 24,
-          background: theme.background,
+          background: isChat ? (isDark ? '#101010' : '#fff') : theme.background,
+          opacity: 1,
           boxSizing: 'border-box',
           padding: '16px 24px',
           display: 'flex',
@@ -169,6 +199,12 @@ const InputBlock: React.FC<InputBlockProps> = (props) => {
             <span style={{ fontSize: 14, color: isDark ? '#CBCBCB' : theme.icon, fontFamily: 'Inter, sans-serif', fontWeight: 400, lineHeight: '140%' }}>Deep Search</span>
           </button>
         </div>
+        {isStreaming && (
+          <div style={{ marginTop: 12, color: theme.text, fontFamily: 'Inter, sans-serif', fontSize: 16, minHeight: 24 }}>
+            {streamed}
+            <span className="animate-pulse">|</span>
+          </div>
+        )}
       </div>
     </div>
   );
