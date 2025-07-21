@@ -46,7 +46,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return 'Invalid email';
     if (password.length < 6) return 'Password too short';
     if (password !== confirm) return 'Passwords do not match';
-    // Мок: успішна реєстрація
     setUser({ email });
     return null;
   };
